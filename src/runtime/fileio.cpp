@@ -139,7 +139,7 @@ void sqf::runtime::fileio::add_mapping_auto(std::string_view phys)
             std::string prefix;
             std::getline(prefixFile, prefix);
             prefixFile.close();
-            add_mapping(prefix, i->path().parent_path().string());
+            add_mapping(i->path().parent_path().string(), prefix);
         }
     }
 }
