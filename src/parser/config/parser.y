@@ -143,7 +143,7 @@
 %token <tokenizer::token> STRING
 %token <tokenizer::token> ANY
 
-%type <::sqf::parser::config::bison::astnode> topstatements topstatement statements statement arrayvalue
+%type <::sqf::parser::config::bison::astnode> statements statement arrayvalue
 %type <::sqf::parser::config::bison::astnode> classdef deleteclass classbody field string number array
 %type <::sqf::parser::config::bison::astnode> arrayvaluelist anyval anyarr anyp anyarray anyvalue ident
 
@@ -155,20 +155,13 @@
 /*** BEGIN - Change the grammar rules below ***/
 /*** BEGIN - Change the grammar rules below ***/
 start: END_OF_FILE                                      { result = ::sqf::parser::config::bison::astnode{}; }
-     | topstatements                                    { result = ::sqf::parser::config::bison::astnode{}; result.append($1); }
+     | statements                                       { result = ::sqf::parser::config::bison::astnode{}; result.append($1); }
      | separators                                       { result = ::sqf::parser::config::bison::astnode{}; }
-     | separators topstatements                         { result = ::sqf::parser::config::bison::astnode{}; result.append($2); }
+     | separators statements                            { result = ::sqf::parser::config::bison::astnode{}; result.append($2); }
      ;
 separators: ";"
           | separators ";"
           ;
-topstatements: topstatement                             { $$ = ::sqf::parser::config::bison::astnode{ astkind::STATEMENTS }; $$.append($1); }
-             | topstatements separators                 { $$ = $1; }
-             | topstatements separators topstatement    { $$ = $1; $$.append($3); }
-             ;
-topstatement: classdef                                  { $$ = $1; }
-            | deleteclass                               { $$ = $1; }
-            ;
 statements: statement                                   { $$ = ::sqf::parser::config::bison::astnode{ astkind::STATEMENTS }; $$.append($1); }
           | statements separators                       { $$ = $1; }
           | statements separators statement             { $$ = $1; $$.append($3); }
@@ -272,7 +265,7 @@ namespace sqf::parser::config::bison
 {
     void parser::error(const location_type& loc, const std::string& msg)
     {
-        actual.__log(logmessage::config::ParseError({ *loc.begin.filename, loc.begin.line, loc.begin.column }, msg));
+        actual.__log(logmessage::config::ParseError({ *loc.begin.filename, static_cast<size_t>(loc.begin.line), static_cast<size_t>(loc.begin.column) }, msg));
     }
     inline parser::symbol_type yylex(::sqf::parser::config::tokenizer& tokenizer)
     {
