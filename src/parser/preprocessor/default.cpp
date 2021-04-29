@@ -693,10 +693,10 @@ std::string sqf::parser::preprocessor::impl_default::instance::parse_ppinstructi
             return "\n";
         }
         line.erase(line.begin(), std::find_if(line.begin(), line.end(), [](char c) -> bool {
-            return c != '"';
+            return c != '"' && c != '<';
         }));
         auto endIter = std::find_if(line.begin(), line.end(), [](char c) -> bool {
-            return c == '"';
+            return c == '"' || c == '>';
         });
         if (std::distance(endIter, line.end()) > 1)
             log(err::UnexpectedDataAfterInclude(fileinfo.to_diag_info()));
