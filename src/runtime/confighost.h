@@ -407,10 +407,10 @@ namespace sqf::runtime
         }
 
         iterator begin() const { return { m_confighost, m_index }; }
-        iterator end() const { return { m_confighost, config::invalid_id }; }
+        iterator end() const { return { m_confighost, m_confighost.m_containers[m_index].size() }; }
 
         iterator_recursive recursive_begin() const { return { m_confighost, m_index }; }
-        iterator_recursive recursive_end() const { return { m_confighost, config::invalid_id }; }
+        iterator_recursive recursive_end() const { return { m_confighost, m_confighost.m_containers[m_index].size() }; }
     };
     inline confignav config::navigate(confighost& host) const { return { host, m_container_id }; }
     inline confignav confighost::root() { return { *this, 0 }; }
