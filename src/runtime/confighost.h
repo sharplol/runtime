@@ -152,7 +152,7 @@ namespace sqf::runtime
                 while (m_id != config::invalid_id)
                 {
                     auto& container = m_confighost.m_containers[m_id];
-                    if (container.size() > m_index + 1)
+                    if (container.size() != m_index)
                     {
                         m_index++;
                         return *this;
