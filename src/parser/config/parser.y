@@ -201,6 +201,7 @@ field: ident "=" anyvalue
      ;
 
 ident: IDENT                                            { $$ = ::sqf::parser::config::bison::astnode{ astkind::IDENT, $1 }; }
+     | number                                           { $$ = $1; }
      ;
 string: STRING                                          { $$ = ::sqf::parser::config::bison::astnode{ astkind::STRING, $1 }; }
       ;
@@ -235,7 +236,6 @@ anyarr: anyp                                            { $$ = $1; }
       ;
 anyp: "class"                                           { $$ = ::sqf::parser::config::bison::astnode{ astkind::ANY, $1 }; }
     | "delete"                                          { $$ = ::sqf::parser::config::bison::astnode{ astkind::ANY, $1 }; }
-    | number                                            { $$ = $1; }
     | string                                            { $$ = $1; }
     | ident                                             { $$ = $1; }
     | "["                                               { $$ = ::sqf::parser::config::bison::astnode{ astkind::ANY, $1 }; }
